@@ -14,7 +14,7 @@ sudo apt-get -y install gcc build-essential autotools-dev autoconf automake git 
 # create required empty dir
 EMPTY_DIR=/var/empty
 
-if [ ! -e $EMPTY_DIR ]
+if [ ! -d $EMPTY_DIR ]
   then sudo mkdir -p -m 0755 $EMPTY_DIR
 fi
 
@@ -32,4 +32,50 @@ PS1_CODE='export PS1="\u@\[\033[1;31m\]\h\033[0m\]:\w $ "'
 
 if ! grep -e "export PS1=" /home/vagrant/.bashrc
   then echo $PS1_CODE >> /home/vagrant/.bashrc
+fi
+
+if [ ! -e /vagrant/.inputrc ]
+then
+  # tweak inputrc for home, end keys etc
+  ln -s /vagrant/.inputrc
+fi
+
+# work in /vagrant so logs can be accessed on host and VM
+INTEGRATION_DIR=/vagrant/testing
+
+if [ -d $INTEGRATION_DIR ]
+  then
+    # testing code already checked out, probably "$ vagrant provision" being run
+    # TODO: how to handle this?
+    # cd $INTEGRATION_DIR
+    # git status
+    # git checkout master
+    # git pull
+  else
+    cd /vagrant
+    git clone https://github.com/open-quantum-safe/testing.git
+fi
+
+# run openssh tests
+# TODO: does set -e work here for fail fast?
+DISABLE_OPENSSH_TESTS=/vagrant/DISABLE_OPENSSH_TESTS
+
+if [ ! -e $DISABLE_OPENSSH_TESTS ]
+  then
+    cd $INTEGRATION_DIR/integration/oqs_openssh
+    ./run.sh | tee `date "+%Y%m%d-%Hh%Mm%Ss-openssh.log.txt"`
+  else
+    echo "Skipping OpenSSH test script"
+fi
+
+# run openssl tests
+DISABLE_OPENSSL_TESTS=/vagrant/DISABLE_OPENSSL_TESTS
+
+if [ ! -e $DISABLE_OPENSSL_TESTS ]
+  then
+    cd $INTEGRATION_DIR/integration/oqs_openssl
+    set +e  # prevent future "which clang" call from breaking run???
+    ./run.sh | tee `date "+%Y%m%d-%Hh%Mm%Ss-openssl.log.txt"`
+  else
+    echo "Skipping OpenSSL test script"
 fi

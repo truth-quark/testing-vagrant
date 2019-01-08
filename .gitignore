@@ -1,2 +1,5 @@
 .vagrant/
+testing/
 *.log
+DISABLE_OPENSSH_TESTS
+DISABLE_OPENSSL_TESTS
