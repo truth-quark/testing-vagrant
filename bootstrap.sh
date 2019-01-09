@@ -43,15 +43,9 @@ fi
 # work in /vagrant so logs can be accessed on host and VM
 INTEGRATION_DIR=/vagrant/testing
 
-if [ -d $INTEGRATION_DIR ]
-  then
-    # testing code already checked out, probably "$ vagrant provision" being run
-    # TODO: how to handle this?
-    # cd $INTEGRATION_DIR
-    # git status
-    # git checkout master
-    # git pull
-  else
+# TODO: add .git to dir name?
+if [ ! -d $INTEGRATION_DIR ]
+then
     cd /vagrant
     git clone https://github.com/open-quantum-safe/testing.git
 fi

@@ -57,6 +57,7 @@ Vagrant.configure("2") do |config|
   #   # Customize the amount of memory on the VM
       # needs 5GB for OpenSSH compilation
       vb.memory = "5120"
+      vb.name = "liboqs_integration_testing_ubuntu-xenial64"
   end
   #
   # View the documentation for the provider you are using for more
