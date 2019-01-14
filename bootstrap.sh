@@ -30,8 +30,8 @@ fi
 # UI tweaks: make host bold red in prompt/visual aid to indicate VM prompt
 PS1_CODE='export PS1="\u@\[\033[1;31m\]\h\033[0m\]:\w $ "'
 
-if ! grep -e "export PS1=" /home/vagrant/.bashrc
-  then echo $PS1_CODE >> /home/vagrant/.bashrc
+if ! grep -e "export PS1=" $HOME/.bashrc
+  then echo $PS1_CODE >> $HOME/.bashrc
 fi
 
 if [ ! -e /vagrant/.inputrc ]
