@@ -57,7 +57,7 @@ DISABLE_OPENSSH_TESTS=/vagrant/DISABLE_OPENSSH_TESTS
 if [ ! -e $DISABLE_OPENSSH_TESTS ]
   then
     cd $INTEGRATION_DIR/integration/oqs_openssh
-    ./run.sh | tee `date "+%Y%m%d-%Hh%Mm%Ss-openssh.log.txt"`
+    time ./run.sh | tee `date "+%Y%m%d-%Hh%Mm%Ss-openssh.log.txt"`
   else
     echo "Skipping OpenSSH test script"
 fi
@@ -69,7 +69,7 @@ if [ ! -e $DISABLE_OPENSSL_TESTS ]
   then
     cd $INTEGRATION_DIR/integration/oqs_openssl
     set +e  # prevent future "which clang" call from breaking run???
-    ./run.sh | tee `date "+%Y%m%d-%Hh%Mm%Ss-openssl.log.txt"`
+    time ./run.sh | tee `date "+%Y%m%d-%Hh%Mm%Ss-openssl.log.txt"`
   else
     echo "Skipping OpenSSL test script"
 fi
